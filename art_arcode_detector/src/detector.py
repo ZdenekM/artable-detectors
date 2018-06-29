@@ -27,29 +27,32 @@ class ArCodeDetector:
 
     def ar_code_cb(self, data):
 
-        rospy.logdebug("New arcodes arrived:")
+        #rospy.loginfo("New arcodes arrived:")
         instances = InstancesArray()
         id = 0
 
         for arcode in data.markers:
 
             aid = int(arcode.id)
-
+            #rospy.loginfo(aid)
             # list of allowed object ids
             # TODO load from param
-            if aid not in [50, 51, 52, 53, 54, 55, 56, 57, 60, 61, 62, 63, 1001, 1002, 1003, 1004, 1005, 1006, 1007,
-                           1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022,
-                           1023, 1024, 1025, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 3001, 3002, 3003, 3004]:
+            #if aid not in [50, 51, 52, 53, 54, 55, 56, 57, 60, 61, 62, 63, 1001, 1002, 1003, 1004, 1005, 1006, 1007,
+            #               1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022,
+            #               1023, 1024, 1025, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 3001, 3002, 3003, 3004]:
+            if aid not in [5001, 5002]:
                 continue
-
+	    
             if aid not in self.objects_cache:
 
                 # TODO AR code ID / object type assignment should be done somewhere...
                 # type "profile_20_60" is just for example (used in art_db/test_db.py)
 
                 object_type = None
-
-                if aid in [50, 51, 52, 53, 54, 55, 56, 57, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010,
+                if aid in [5001, 5002]:
+                    object_type = self.art.get_object_type("Modry_kontejner")
+                    
+                elif aid in [50, 51, 52, 53, 54, 55, 56, 57, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010,
                            1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025]:
                     object_type = self.art.get_object_type("Spojka")
                 elif aid in [60, 61, 62, 63, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008]:
