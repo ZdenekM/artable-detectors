@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="debug" default="true"/>
+
+    <node pkg="art_presence_detector" name="art_presence_detector" type="art_presence_detector_node" output="screen">
+
+    </node>
+    <node if="$(arg debug)" pkg="tf" type="static_transform_publisher" name="marker_link" args="0 0 1.2 0 3.14 0 /marker /kinect2_link 100"/>
+    <node if="$(arg debug)" pkg="tf" type="static_transform_publisher" name="world_link" args="0 0 0 0 0 0 /marker /world 100"/>
+
+</launch>
