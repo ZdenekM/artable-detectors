@@ -30,7 +30,7 @@ typedef PointCloud::Ptr PointCloudPtr;
 class ClusterDetector {
 public:
     ClusterDetector() : spinner(4){
-        sub = nh.subscribe ("/kinect2/qhd/points", 1, &ClusterDetector::cloud_cb, this);
+        sub = nh.subscribe ("/art/localhost/kinect2/qhd/points", 1, &ClusterDetector::cloud_cb, this);
 
         // Create a ROS publisher for the output point cloud
         pub = nh.advertise<sensor_msgs::PointCloud2> ("/output", 1);
@@ -87,12 +87,12 @@ private:
 
         pass.setIndices(indices1);
         pass.setFilterFieldName("y");
-        pass.setFilterLimits(-2,0);
+        pass.setFilterLimits(-2,-0.1);
         pass.filter(*indices2);
 
         pass.setIndices(indices2);
         pass.setFilterFieldName("z");
-        pass.setFilterLimits(-1,1);
+        pass.setFilterLimits(-0.2,1);
         pass.filter(*indices1);
 
 
@@ -132,9 +132,10 @@ private:
             Eigen::Vector4f centroid;
             pcl::compute3DCentroid(*pc_filtered, it->indices, centroid);
             visualization_msgs::Marker marker;
-            marker.header.frame_id = "/kinect2_ir_optical_frame";
+            marker.header.frame_id = input->header.frame_id; //"/kinect2_ir_optical_frame";
             marker.header.stamp = ros::Time::now();
             marker.ns = "my_namespace";
+            marker.lifetime = ros::Duration(1/5.0);
             marker.id = j;
             marker.type = visualization_msgs::Marker::SPHERE;
             marker.action = visualization_msgs::Marker::ADD;
