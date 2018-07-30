@@ -118,11 +118,14 @@ private:
         art_msgs::ObjectsCentroids centroids;
         centroids.header.frame_id = "/marker";
 
-        std::cout << "Clusters: " << cluster_indices.size() << std::endl;
+        // std::cout << "Clusters: " << cluster_indices.size() << std::endl;
+        std_msgs::Bool boolMsg;
         if (cluster_indices.size() > 0) {
-            user_pub.publish(true);
+            boolMsg.data = true;
+            user_pub.publish(boolMsg);
         } else {
-            user_pub.publish(false);
+            boolMsg.data = false;
+            user_pub.publish(boolMsg);
         }
 
         int j = 0;
@@ -169,7 +172,7 @@ private:
             pub.publish(output);
         }
 
-        std::cout << "Processing time: " << ros::Time::now() - begin << std::endl;
+        // std::cout << "Processing time: " << ros::Time::now() - begin << std::endl;
     }
 
 };
